@@ -65,7 +65,7 @@ Article.fetchAll = () => {
       }
     })
   }
-  storageBlog = JSON.parse(localStorage.rawData);
-  Article.loadAll(storageBlog);
+  // storageBlog = JSON.parse(localStorage.rawData);
+  // Article.loadAll(storageBlog);
 }
 
