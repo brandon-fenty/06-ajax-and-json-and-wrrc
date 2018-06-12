@@ -14,6 +14,8 @@ Article.all = [];
 
 // COMMENT: Why isn't this method written as an arrow function?
 // PUT YOUR RESPONSE HERE
+// Because you wouldn't want to refactor a function that depends on contextual this, if this was converted to an arrow function it would break the prototype function.
+
 Article.prototype.toHtml = function() {
   let template = Handlebars.compile($('#article-template').text());
 
@@ -38,16 +40,31 @@ Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
   articleData.forEach(articleObject => Article.all.push(new Article(articleObject)))
+  articleView.initIndexPage()
 }
 
 // REVIEW: This function will retrieve the data from either a local or remote source, and process it, then hand off control to the View.
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
+  let storageBlog;
   if (localStorage.rawData) {
-
-    Article.loadAll();
-
+    storageBlog = JSON.parse(localStorage.rawData);
+    console.log('Loaded from local storage')
+    Article.loadAll(storageBlog);
+//Sara from Kat notes: get data out of local storage and pass it to the loadAll. call the function that initializes the index page and in ajax call bellow instead use get JSON. and pass to load all function and set it into local storage. 
   } else {
-
+    $.ajax({
+      url: 'data/hackerIpsum.json',
+      method: 'GET',
+      headers: {},
+      success:function(data, message, xhr){
+        console.log(data);
+        console.log('Fetched from AJAX');
+        localStorage.setItem('rawData',JSON.stringify(data));
+      }
+    })
   }
+  storageBlog = JSON.parse(localStorage.rawData);
+  Article.loadAll(storageBlog);
 }
+
