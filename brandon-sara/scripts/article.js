@@ -61,10 +61,10 @@ Article.fetchAll = () => {
         console.log(data);
         console.log('Fetched from AJAX');
         localStorage.setItem('rawData',JSON.stringify(data));
+        Article.fetchAll();
       }
     })
   }
-  storageBlog = JSON.parse(localStorage.rawData);
-  Article.loadAll(storageBlog);
+
 }
 
