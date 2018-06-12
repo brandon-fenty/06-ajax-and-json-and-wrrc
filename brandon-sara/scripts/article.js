@@ -40,7 +40,7 @@ Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
   articleData.forEach(articleObject => Article.all.push(new Article(articleObject)))
-  articleView.initIndexPage()
+  articleView.initIndexPage ()
 }
 
 // REVIEW: This function will retrieve the data from either a local or remote source, and process it, then hand off control to the View.
@@ -61,6 +61,7 @@ Article.fetchAll = () => {
         console.log(data);
         console.log('Fetched from AJAX');
         localStorage.setItem('rawData',JSON.stringify(data));
+        Article.fetchAll();
       }
     })
   }
